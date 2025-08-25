@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "../../App.css";
 
 const AddressSelector = () => {
   const [provinces, setProvinces] = useState([]);
@@ -44,11 +45,11 @@ const AddressSelector = () => {
   }, [selectedDistrict]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
+    <>
       <select
         value={selectedProvince}
         onChange={(e) => setSelectedProvince(e.target.value)}
-        style={selectStyle}
+        className="search-input city"
       >
         <option value="0">Tỉnh/Thành Phố</option>
         {provinces.map((p) => (
@@ -61,7 +62,7 @@ const AddressSelector = () => {
       <select
         value={selectedDistrict}
         onChange={(e) => setSelectedDistrict(e.target.value)}
-        style={selectStyle}
+        className="search-input district"
       >
         <option value="0">Quận/Huyện</option>
         {districts.map((d) => (
@@ -71,7 +72,7 @@ const AddressSelector = () => {
         ))}
       </select>
 
-      <select style={selectStyle}>
+      <select className="search-input ward">
         <option value="0">Phường/Xã</option>
         {wards.map((w) => (
           <option key={w.id} value={w.id}>
@@ -79,18 +80,8 @@ const AddressSelector = () => {
           </option>
         ))}
       </select>
-    </div>
+    </>
   );
-};
-
-const selectStyle = {
-  display: "inline-block",
-  width: "29%",
-  padding: "5px",
-  margin: "5px 2%",
-  border: "1px solid #686868",
-  borderRadius: "5px",
-  fontSize: "16px",
 };
 
 export default AddressSelector;

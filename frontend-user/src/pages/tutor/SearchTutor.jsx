@@ -1,7 +1,10 @@
 import React from "react";
 import "../../App.css";
-import AppHorizontalButtons from "../../components/common/AppHorizontalButtons";
+import WebHorizontalButtons from "../../components/common/WebHorizontalButtons";
+import WebStudentRequestCard from "../../components/common/WebStudentRequestCard";
 import AddressSelector from "../../components/Location/AddressSelector";
+import mockStudentRequests from "../../mock/student/StudentRequestMockData";
+
 const SearchTutor = () => {
   return (
     <div>
@@ -48,10 +51,14 @@ const SearchTutor = () => {
             <option value="2 tháng" />
           </datalist>
 
+          <select className="search-input type">
+            <option>Kiểu lớp học</option>
+            <option>Lớp thường</option>
+            <option>Lớp pass</option>
+          </select>
+
           {/* Hàng 2 */}
-          <div>
-            <AddressSelector />
-          </div>
+          <AddressSelector />
 
           <select className="search-input gender">
             <option>Giới tính</option>
@@ -59,11 +66,39 @@ const SearchTutor = () => {
             <option>Nữ</option>
             <option>Cả hai</option>
           </select>
+
+          <input
+            type="number"
+            className="search-input student-count"
+            placeholder="Số học viên"
+            min="1"
+            max="20"
+            onInput={(e) => {
+              // Chỉ cho số, xoá ký tự khác
+              e.target.value = e.target.value.replace(/[^0-9]/g, "");
+
+              // Giới hạn min/max
+              if (e.target.value !== "") {
+                let value = parseInt(e.target.value, 10);
+                if (value < 1) e.target.value = 1;
+                if (value > 20) e.target.value = 20;
+              }
+            }}
+          />
+
+
         </div>
       </div>
 
       {/* Hàng nút scroll ngang */}
-      <AppHorizontalButtons />
+      <WebHorizontalButtons />
+
+      {/* Kết quả tìm kiếm */}
+      <div className="grid grid-cols-1 gap-4">
+        {mockStudentRequests.map((request) => (
+          <WebStudentRequestCard key={request.id} {...request} />
+        ))}
+      </div>
     </div>
   );
 };

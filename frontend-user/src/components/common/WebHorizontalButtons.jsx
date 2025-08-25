@@ -1,9 +1,9 @@
 import React from 'react';
-import AppButton from '../../components/common/AppButton';
+import WebButton from './WebButton';
 import AppIcon from '../../config/AppIcon';
 import '../../App.css';
 
-const AppHorizontalButtons = () => {
+const WebHorizontalButtons = () => {
   const buttonsData = [
     { name: 'math', text: 'Toán' },
     { name: 'literature', text: 'Tiếng Việt' },
@@ -15,7 +15,7 @@ const AppHorizontalButtons = () => {
   return (
     <div className="horizontal-buttons-wrapper" style={{ display: 'flex', gap: '16px', overflowX: 'auto', padding: '8px 0' }}>
       {buttonsData.map((btn, index) => (
-        <AppButton
+        <WebButton
           key={index}
           icon={<AppIcon name={btn.name} color="var(--color-primary)" />}
           text={btn.text}
@@ -34,4 +34,4 @@ const AppHorizontalButtons = () => {
   );
 };
 
-export default AppHorizontalButtons;
+export default WebHorizontalButtons;
