@@ -1,71 +1,74 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/authService";
+import "../../assets/styles/Login.css";
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
+
     if (!email || !password) {
-      setError('Vui lòng điền email và mật khẩu')
-      return
+      setError("Vui lòng điền email và mật khẩu");
+      return;
     }
-    setLoading(true)
+
+    setLoading(true);
     try {
-      // Replace with real API call. This is a mock POST to demonstrate behavior.
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.message || 'Đăng nhập thất bại')
-      }
-      // on success navigate to profile
-      navigate('/profile')
+      const response = await loginUser({ email, password });
+      const redirectTo =
+        response.role === "student" ? "/homecustomer" : "/hometutor";
+      navigate(redirectTo);
     } catch (err) {
-      setError(err.message)
+      setError(err.message || "Đăng nhập thất bại");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div style={{ maxWidth: 480, margin: '48px auto', padding: 24, background: '#fff', borderRadius: 8 }}>
+    <form className="login-form" onSubmit={handleSubmit}>
       <h2>Đăng nhập</h2>
-      {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <label style={{ display: 'block', marginBottom: 8 }}>Email</label>
+      {error && <p className="error">{error}</p>}
+
+      <div className="form-group">
+        <label>Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{ width: '100%', padding: 8, marginBottom: 12 }}
+          required
         />
+      </div>
 
-        <label style={{ display: 'block', marginBottom: 8 }}>Mật khẩu</label>
+      <div className="form-group">
+        <label>Mật khẩu</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={{ width: '100%', padding: 8, marginBottom: 12 }}
+          required
         />
+      </div>
 
-        <button type="submit" disabled={loading} style={{ padding: '10px 16px' }}>
-          {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+      <button type="submit" disabled={loading} className="submit-btn">
+        {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+      </button>
+
+      <p className="register-link">
+        Chưa có tài khoản?{" "}
+        <button type="button" onClick={() => navigate("/register")}>
+          Đăng ký
         </button>
-      </form>
-      <p style={{ marginTop: 12 }}>
-        Chưa có tài khoản? <button onClick={() => navigate('/register')} style={{ color: '#1890ff', background: 'none', border: 'none', cursor: 'pointer' }}>Đăng kí</button>
       </p>
-    </div>
-  )
-}
+    </form>
+  );
+};
 
-export default Login
+export default Login;
