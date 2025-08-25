@@ -11,6 +11,7 @@ import Guide from "../components/Guide/Guide";
 import Policy from "../components/Policy/Policy";
 
 import Home from "../pages/common/Home";
+import SearchTutor from "../pages/tutor/SearchTutor";
 
 const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/hometutor" element={<HomeTutor />} />
+        <Route path="/searchtutor" element={<SearchTutor />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/student" element={<StudentPage />} />
         <Route path="/guide" element={<Guide />} />

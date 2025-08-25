@@ -1,3 +1,5 @@
+@import url("./config/AppColor.css");
+
 /* Reset margin/padding mặc định */
 * {
   margin: 0;
@@ -27,4 +29,87 @@ body {
 
 .layout-main {
   flex: 1 0 auto; /* grow to fill available space */
+}
+
+.search-tutor-container {
+  width: 100%;
+  height: 160px;
+  background-color: var(--color-primary);
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  position: relative;
+}
+
+.search-container {
+  padding: 24px;
+  width: 80%;
+  border: 1px solid var(--color-black);
+  border-radius: 32px;
+  box-sizing: border-box;
+  margin: 0 auto;  
+  position: relative;
+  top: -80px; /* Kéo lên trên */
+  background-color: var(--color-white);
+}
+
+.search-container h2 {
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 24px;
+}
+
+.search-inputs {
+  display: flex;
+  flex-wrap: wrap; /* Cho phép xuống hàng */
+  gap: 16px;       /* khoảng cách giữa các ô */
+  justify-content: center;
+}
+
+/* Style chung cho input/select */
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid var(--color-black);
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Hàng 1 */
+.search-inputs input[list="subjects"] {
+  width: 40%;   /* Môn học/Chứng chỉ (dài) */
+}
+.search-inputs input[type="time"] {
+  width: 15%;   /* Giờ học (ngắn) */
+}
+.search-inputs select:nth-of-type(1) {
+  width: 15%;   /* Ngày học (ngắn) */
+}
+.search-inputs input[list="routes"] {
+  width: 25%;   /* Lộ trình (vừa) */
+}
+
+/* Hàng 2 */
+.city {
+  width: 25%;   /* Thành phố (vừa) */
+}
+.district {
+  width: 25%;   /* Quận/Huyện (vừa) */
+}
+.ward {
+  width: 25%;   /* Xã (vừa) */
+}
+.gender {
+  width: 15%;   /* Giới tính (ngắn) */
+}
+
+/* Horizontal buttons */
+.horizontal-buttons-wrapper {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch; /* smooth scroll trên iOS */
+  margin-top: -40px;
+  margin-left: 24px;
+  margin-right: 24px;
 }
