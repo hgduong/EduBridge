@@ -1,69 +1,119 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/authService";
+import "../../assets/styles/Register.css";
 const Register = () => {
-  const navigate = useNavigate()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirm, setConfirm] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    full_name: "",
+    email: "",
+    phone_number: "",
+    password: "",
+    confirm_password: "",
+    role: "student",
+  });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    if (!name || !email || !password) {
-      setError('Vui lòng điền đầy đủ thông tin')
-      return
+    e.preventDefault();
+    setError("");
+
+    if (form.password !== form.confirm_password) {
+      setError("Mật khẩu xác nhận không khớp");
+      return;
     }
-    if (password !== confirm) {
-      setError('Mật khẩu xác nhận không khớp')
-      return
-    }
-    setLoading(true)
+
+    setLoading(true);
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      })
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.message || 'Đăng kí thất bại')
-      }
-      navigate('/login')
+      // Gửi dữ liệu lưu vào mongo
+      const res = await registerUser(form);
+      //-------------------------------------------
+      const redirectTo = res.role === "student" ? "/student" : "/hometutor";
+      navigate(redirectTo);
     } catch (err) {
-      setError(err.message)
+      setError(err.message || "Đăng ký thất bại");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <div style={{ maxWidth: 560, margin: '48px auto', padding: 24, background: '#fff', borderRadius: 8 }}>
-      <h2>Đăng kí</h2>
-      {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <label style={{ display: 'block', marginBottom: 8 }}>Họ tên</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+    <form onSubmit={handleSubmit} className="register-form">
+      <h2>Đăng ký tài khoản</h2>
+      {error && <p className="error">{error}</p>}
 
-        <label style={{ display: 'block', marginBottom: 8 }}>Email</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+      <div className="form-group">
+        <label>Họ tên</label>
+        <input
+          name="full_name"
+          value={form.full_name}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-        <label style={{ display: 'block', marginBottom: 8 }}>Mật khẩu</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+      <div className="form-group">
+        <label>Email</label>
+        <input
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-        <label style={{ display: 'block', marginBottom: 8 }}>Xác nhận mật khẩu</label>
-        <input type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} style={{ width: '100%', padding: 8, marginBottom: 12 }} />
+      <div className="form-group">
+        <label>Số điện thoại</label>
+        <input
+          name="phone_number"
+          value={form.phone_number}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-        <button type="submit" disabled={loading} style={{ padding: '10px 16px' }}>{loading ? 'Đang gửi...' : 'Đăng kí'}</button>
-      </form>
-      <p style={{ marginTop: 12 }}>
-        Đã có tài khoản? <button onClick={() => navigate('/login')} style={{ color: '#1890ff', background: 'none', border: 'none', cursor: 'pointer' }}>Đăng nhập</button>
-      </p>
-    </div>
-  )
-}
+      <div className="form-group">
+        <label>Mật khẩu</label>
+        <input
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
-export default Register
+      <div className="form-group">
+        <label>Xác nhận mật khẩu</label>
+        <input
+          name="confirm_password"
+          type="password"
+          value={form.confirm_password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Vai trò</label>
+        <select name="role" value={form.role} onChange={handleChange}>
+          <option value="student">Học sinh</option>
+          <option value="tutor">Gia sư</option>
+        </select>
+      </div>
+
+      <button type="submit" disabled={loading} className="submit-btn">
+        {loading ? "Đang gửi..." : "Đăng ký"}
+      </button>
+    </form>
+  );
+};
+
+export default Register;

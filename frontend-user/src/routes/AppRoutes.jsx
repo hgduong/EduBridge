@@ -6,7 +6,7 @@ import Register from "../pages/common/Register";
 import Profile from "../pages/common/Profile";
 import NotFound from "../pages/common/NotFound";
 import HomeTutor from "../pages/tutor/HomeTutor";
-import HomeCustomer from "../pages/custommer/HomeCustomer";
+import StudentPage from "../pages/student/StudentPage";
 import Guide from "../components/Guide/Guide";
 import Policy from "../components/Policy/Policy";
 
@@ -22,7 +22,7 @@ const AppRoutes = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/hometutor" element={<HomeTutor />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/homecustomer" element={<HomeCustomer />} />
+        <Route path="/student" element={<StudentPage />} />
         <Route path="/guide" element={<Guide />} />
         <Route path="/policy" element={<Policy />} />
       </Route>

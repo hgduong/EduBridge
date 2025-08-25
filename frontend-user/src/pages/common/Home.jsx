@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import image from "../../assets/images/image.png";
 import image2 from "../../assets/images/img2.png";
-
+import AddressSelector from "../../components/Location/AddressSelector";
 const Home = () => {
   useEffect(() => {
     const els = document.querySelectorAll(".anim-title");
@@ -115,26 +115,7 @@ const Home = () => {
       {/* Search section with hierarchical selects */}
       <section id="search">
         <h2 className="anim-title">Tìm kiếm lớp học</h2>
-        <div className="search-row">
-          <select>
-            <option>Chọn tỉnh/thành phố</option>
-            <option>Hà Nội</option>
-            <option>Hồ Chí Minh</option>
-            <option>Đà Nẵng</option>
-          </select>
-          <select>
-            <option>Chọn quận/huyện</option>
-            <option>Quận 1</option>
-            <option>Quận 2</option>
-            <option>Quận 3</option>
-          </select>
-          <select>
-            <option>Chọn xã/phường</option>
-            <option>Phường A</option>
-            <option>Phường B</option>
-          </select>
-          <button className="read-more-btn">Tìm</button>
-        </div>
+        <AddressSelector />
       </section>
 
       {/* Tutor cards replacing policy */}
