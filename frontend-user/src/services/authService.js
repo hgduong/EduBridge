@@ -58,3 +58,22 @@ export const getUserById = async (role, id) => {
     throw err;
   }
 };
+
+export const getAllUsers = async () => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/getAllUsers`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || "Không lấy được danh sách người dùng");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Lỗi getAllUsers:", err.message);
+    throw err;
+  }
+};

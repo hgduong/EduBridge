@@ -55,3 +55,19 @@ exports.getUserById = async (req, res) => {
       .json({ message: "Lỗi khi lấy người dùng", error: err.message });
   }
 };
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const students = await Student.find();
+    const tutors = await Tutor.find();
+    const allUsers = [...students, ...tutors];
+    res.status(200).json({ allUsers });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Lỗi khi lấy danh sách người dùng",
+        error: err.message,
+      });
+  }
+};

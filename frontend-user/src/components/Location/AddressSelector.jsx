@@ -50,7 +50,7 @@ const AddressSelector = () => {
         onChange={(e) => setSelectedProvince(e.target.value)}
         style={selectStyle}
       >
-        <option value="0">Tỉnh Thành</option>
+        <option value="0">Tỉnh/Thành Phố</option>
         {provinces.map((p) => (
           <option key={p.id} value={p.id}>
             {p.full_name}
@@ -63,7 +63,7 @@ const AddressSelector = () => {
         onChange={(e) => setSelectedDistrict(e.target.value)}
         style={selectStyle}
       >
-        <option value="0">Quận Huyện</option>
+        <option value="0">Quận/Huyện</option>
         {districts.map((d) => (
           <option key={d.id} value={d.id}>
             {d.full_name}
@@ -72,7 +72,7 @@ const AddressSelector = () => {
       </select>
 
       <select style={selectStyle}>
-        <option value="0">Phường Xã</option>
+        <option value="0">Phường/Xã</option>
         {wards.map((w) => (
           <option key={w.id} value={w.id}>
             {w.full_name}
@@ -85,7 +85,7 @@ const AddressSelector = () => {
 
 const selectStyle = {
   display: "inline-block",
-  width: "25%",
+  width: "29%",
   padding: "5px",
   margin: "5px 2%",
   border: "1px solid #686868",
