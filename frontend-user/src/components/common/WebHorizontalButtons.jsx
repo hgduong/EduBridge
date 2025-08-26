@@ -17,16 +17,16 @@ const WebHorizontalButtons = () => {
       {buttonsData.map((btn, index) => (
         <WebButton
           key={index}
-          icon={<AppIcon name={btn.name} color="var(--color-primary)" />}
+          icon={<AppIcon name={btn.name} color="var(--color-tertiary)" />}
           text={btn.text}
           width="140px"
           height="48px"
           backgroundColor="var(--color-white)"       // khi chưa hover
-          textColor="var(--color-primary)"           // khi chưa hover
-          borderColor="var(--color-primary)"         // khi chưa hover
-          hoverBackgroundColor="var(--color-primary)"// khi hover
+          textColor="var(--color-tertiary)"           // khi chưa hover
+          borderColor="var(--color-tertiary)"         // khi chưa hover
+          hoverBackgroundColor="var(--color-tertiary)"// khi hover
           hoverTextColor="var(--color-white)"        // khi hover
-          hoverBorderColor="var(--color-primary)"    // khi hover
+          hoverBorderColor="var(--color-tertiary)"    // khi hover
           borderRadius="24px"
         />
       ))}

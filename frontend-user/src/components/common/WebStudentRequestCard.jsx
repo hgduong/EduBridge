@@ -19,7 +19,7 @@ const WebStudentRequestCard = ({
       <span
         style={{
           ...styles.status,
-          backgroundColor: status === "Còn" ? "var(--color-yellowf6b737)" : "var(--color-redff3131)",
+          backgroundColor: status === "Còn" ? "var(--color-primary)" : "var(--color-redff3131)",
         }}
       >
         {status}
@@ -41,12 +41,12 @@ const WebStudentRequestCard = ({
             text="Nhận học sinh ngay"
             width="100%"
             height="48px"
-            backgroundColor="var(--color-primary)"
+            backgroundColor="var(--color-secondary)"
             textColor="var(--color-white)"
-            borderColor="var(--color-primary)"
-            hoverBackgroundColor="var(--color-quaternary)"
+            borderColor="var(--color-secondary)"
+            hoverBackgroundColor="var(--color-primary)"
             hoverTextColor="var(--color-white)"
-            hoverBorderColor="var(--color-quaternary)"
+            hoverBorderColor="var(--color-primary)"
             borderRadius="12px"
           />
         </div>
@@ -67,7 +67,7 @@ const styles = {
     marginRight: "24px",
     marginLeft: "24px",
     overflow: "hidden",
-    backgroundColor: "var(--color-secondary)",
+    backgroundColor: "var(--color-bluee1f4ff)",
   },
   status: {
     position: "absolute",

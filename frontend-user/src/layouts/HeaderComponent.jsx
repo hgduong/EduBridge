@@ -2,6 +2,7 @@
 import "../assets/styles/HeaderComponent.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoTE from "../assets/images/logo_TE.jpg";
+import WebButton from "../components/common/WebButton";
 
 const Header = () => {
   const scrollToSection = (id) => {
@@ -27,74 +28,76 @@ const Header = () => {
   const location = useLocation();
 
   const navigateAndScroll = (id) => {
-    // If we're already on home, just scroll
     if (location.pathname === "/" || location.pathname === "") {
       scrollToSection(id);
       return;
     }
-    // otherwise navigate to home and pass requested section in state
     navigate("/", { state: { scrollTo: id } });
   };
 
   return (
     <header className="header">
-      <div
-        style={{
-          background: "#ffffffff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: 1400,
-          margin: "0 auto",
-          padding: "0 3rem",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link to="/" className="brand" style={{ textDecoration: "none" }}>
+      <div className="header-container">
+        {/* Logo */}
+        <div className="brand-wrapper">
+          <Link to="/" className="brand">
             <img src={logoTE} alt="EduBridge" className="site-logo" />
           </Link>
         </div>
 
-        <nav
-          className="header-nav"
-          style={{ display: "flex", gap: 8, alignItems: "center" }}
-        >
+        {/* Navigation */}
+        <nav className="header-nav">
           {navItems.map((item, idx) =>
             item.to ? (
-              <NavLink key={idx} to={item.to} className="nav-button">
+              <Link key={idx} to={item.to} className="nav-link">
                 {item.label}
-              </NavLink>
+              </Link>
             ) : item.toSection ? (
-              <button
+              <span
                 key={idx}
-                className="nav-button"
+                className="nav-link"
                 onClick={() => navigateAndScroll(item.toSection)}
               >
                 {item.label}
-              </button>
+              </span>
             ) : (
-              <button key={idx} className="nav-button" onClick={item.action}>
+              <span key={idx} className="nav-link" onClick={item.action}>
                 {item.label}
-              </button>
+              </span>
             )
           )}
         </nav>
 
-        <div style={{ display: "flex", gap: 8 }}>
-          <Link to="/register" className="nav-button">
-            Đăng kí
-          </Link>
-          <Link
-            to="/login"
-            className="nav-button"
-            style={{
-              background: "transparent",
-              color: "#007bff",
-              border: "1px solid #007bff",
-            }}
-          >
-            Đăng nhập
-          </Link>
+
+        {/* Auth Buttons */}
+        <div className="auth-buttons">
+          <WebButton
+            text="Đăng kí"
+            onClick={() => navigate("/register")}
+            width="120px"
+            height="46px"
+            backgroundColor="var(--color-primary)"
+            textColor="var(--color-white)"
+            borderColor="var(--color-primary)"
+            hoverBackgroundColor="var(--color-secondary)"
+            hoverTextColor="var(--color-white)"
+            hoverBorderColor="var(--color-secondary)"
+            borderRadius="12px"
+          />
+
+          <WebButton
+            text="Đăng nhập"
+            onClick={() => navigate("/login")}
+            width="120px"
+            height="46px"
+            backgroundColor="transparent"
+            textColor="var(--color-primary)"
+            borderColor="var(--color-primary)"
+            hoverBackgroundColor="var(--color-secondary)"
+            hoverTextColor="var(--color-white)"
+            hoverBorderColor="var(--color-secondary)"
+            borderRadius="12px"
+          />
         </div>
       </div>
     </header>
