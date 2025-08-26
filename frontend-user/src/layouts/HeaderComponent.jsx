@@ -1,17 +1,49 @@
-// Layout header now uses react-router links for clean navigation
+// src/layout/HeaderComponent.jsx
 import "../assets/styles/HeaderComponent.css";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logoTE from "../assets/images/logo_TE.jpg";
+import { useEffect, useState } from "react";
 import WebButton from "../components/common/WebButton";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const updateUser = () => {
+      const storedUser = localStorage.getItem("user");
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+    };
+
+    updateUser(); // lần đầu
+    window.addEventListener("storage", updateUser); // lắng nghe thay đổi
+
+    return () => window.removeEventListener("storage", updateUser);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
+
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -60; // avoid being hidden under header
+      const yOffset = -60;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
+  };
+
+  const navigateAndScroll = (id) => {
+    if (location.pathname === "/" || location.pathname === "") {
+      scrollToSection(id);
+      return;
+    }
+    navigate("/", { state: { scrollTo: id } });
   };
 
   const navItems = [
@@ -24,16 +56,13 @@ const Header = () => {
     { label: "Liên hệ", toSection: "contact" },
   ];
 
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const navigateAndScroll = (id) => {
-    if (location.pathname === "/" || location.pathname === "") {
-      scrollToSection(id);
-      return;
-    }
-    navigate("/", { state: { scrollTo: id } });
-  };
+  // Ẩn item không hợp với role
+  const filteredNavItems = navItems.filter((item) => {
+    if (!user) return true; // chưa đăng nhập → hiển thị tất cả
+    if (item.to === "/hometutor" && user.role === "student") return false;
+    if (item.to === "/student" && user.role === "tutor") return false;
+    return true;
+  });
 
   return (
     <header className="header">
@@ -47,7 +76,7 @@ const Header = () => {
 
         {/* Navigation */}
         <nav className="header-nav">
-          {navItems.map((item, idx) =>
+          {filteredNavItems.map((item, idx) =>
             item.to ? (
               <Link key={idx} to={item.to} className="nav-link">
                 {item.label}
@@ -68,36 +97,52 @@ const Header = () => {
           )}
         </nav>
 
-
         {/* Auth Buttons */}
         <div className="auth-buttons">
-          <WebButton
-            text="Đăng kí"
-            onClick={() => navigate("/register")}
-            width="120px"
-            height="46px"
-            backgroundColor="var(--color-primary)"
-            textColor="var(--color-white)"
-            borderColor="var(--color-primary)"
-            hoverBackgroundColor="var(--color-secondary)"
-            hoverTextColor="var(--color-white)"
-            hoverBorderColor="var(--color-secondary)"
-            borderRadius="12px"
-          />
-
-          <WebButton
-            text="Đăng nhập"
-            onClick={() => navigate("/login")}
-            width="120px"
-            height="46px"
-            backgroundColor="transparent"
-            textColor="var(--color-primary)"
-            borderColor="var(--color-primary)"
-            hoverBackgroundColor="var(--color-secondary)"
-            hoverTextColor="var(--color-white)"
-            hoverBorderColor="var(--color-secondary)"
-            borderRadius="12px"
-          />
+          {!user ? (
+            <>
+              <WebButton
+                text="Đăng kí"
+                onClick={() => navigate("/register")}
+                width="120px"
+                height="46px"
+                backgroundColor="var(--color-primary)"
+                textColor="var(--color-white)"
+                borderColor="var(--color-primary)"
+                hoverBackgroundColor="var(--color-secondary)"
+                hoverTextColor="var(--color-white)"
+                hoverBorderColor="var(--color-secondary)"
+                borderRadius="12px"
+              />
+              <WebButton
+                text="Đăng nhập"
+                onClick={() => navigate("/login")}
+                width="120px"
+                height="46px"
+                backgroundColor="transparent"
+                textColor="var(--color-primary)"
+                borderColor="var(--color-primary)"
+                hoverBackgroundColor="var(--color-secondary)"
+                hoverTextColor="var(--color-white)"
+                hoverBorderColor="var(--color-secondary)"
+                borderRadius="12px"
+              />
+            </>
+          ) : (
+            <WebButton
+              text="Đăng xuất"
+              onClick={handleLogout}
+              width="120px"
+              height="46px"
+              backgroundColor="var(--color-primary)"
+              textColor="var(--color-white)"
+              borderColor="var(--color-primary)"
+              hoverBackgroundColor="var(--color-secondary)"
+              hoverTextColor="var(--color-white)"
+              hoverBorderColor="var(--color-secondary)"
+              borderRadius="12px"
+            />
+          )}
         </div>
       </div>
     </header>

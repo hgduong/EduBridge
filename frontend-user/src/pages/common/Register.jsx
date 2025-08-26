@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../services/authService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../assets/styles/Register.css";
+
 const Register = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -24,18 +27,62 @@ const Register = () => {
     e.preventDefault();
     setError("");
 
-    if (form.password !== form.confirm_password) {
+    const trimmedForm = {
+      ...form,
+      full_name: form.full_name.trim(),
+      email: form.email.trim(),
+      phone_number: form.phone_number.trim(),
+      password: form.password.trim(),
+      confirm_password: form.confirm_password.trim(),
+    };
+
+    const nameParts = trimmedForm.full_name.split(" ");
+    if (nameParts.length > 30) {
+      setError("Họ tên không được quá 30 kí tự");
+      return;
+    }
+    if (nameParts.some((word) => word.length > 10)) {
+      setError("Mỗi từ trong họ tên không quá 10 kí tự");
+      return;
+    }
+
+    if (trimmedForm.password.length < 6 || trimmedForm.password.length > 30) {
+      setError("Mật khẩu phải từ 6 đến 30 kí tự");
+      return;
+    }
+
+    if (trimmedForm.password !== trimmedForm.confirm_password) {
       setError("Mật khẩu xác nhận không khớp");
+      return;
+    }
+
+    if (trimmedForm.email.length > 30) {
+      setError("Email không được quá 30 kí tự");
+      return;
+    }
+
+    if (/\s/.test(trimmedForm.password)) {
+      setError("Mật khẩu không được chứa khoảng trắng");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedForm.email)) {
+      setError("Email không hợp lệ");
+      return;
+    }
+
+    const phoneRegex = /^0\d{9,10}$/;
+    if (!phoneRegex.test(trimmedForm.phone_number)) {
+      setError("Số điện thoại phải bắt đầu bằng 0 và có 10 hoặc 11 chữ số");
       return;
     }
 
     setLoading(true);
     try {
-      // Gửi dữ liệu lưu vào mongo
-      const res = await registerUser(form);
-      //-------------------------------------------
-      const redirectTo = res.role === "student" ? "/student" : "/hometutor";
-      navigate(redirectTo);
+      const res = await registerUser(trimmedForm);
+      toast.success("Đăng ký thành công!");
+      navigate("/login");
     } catch (err) {
       setError(err.message || "Đăng ký thất bại");
     } finally {
