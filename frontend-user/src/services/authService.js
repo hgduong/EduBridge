@@ -22,18 +22,28 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async (userData) => {
-  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(userData),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
 
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.message || "Đăng nhập thất bại");
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Đăng nhập thất bại");
+    }
+
+    // Lưu token vào localStorage
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    return data;
+  } catch (error) {
+    console.error("Lỗi đăng nhập:", error.message);
+    throw error;
   }
-
-  return await res.json();
 };
 
 export const getUserById = async (role, id) => {
@@ -43,7 +53,10 @@ export const getUserById = async (role, id) => {
       `${API_BASE_URL}/api/auth/users/${role}/${cleanId}`,
       {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
@@ -55,6 +68,50 @@ export const getUserById = async (role, id) => {
     return await res.json();
   } catch (err) {
     console.error("Lỗi getUserById:", err.message);
+    throw err;
+  }
+};
+
+export const getAllUsers = async () => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/auth/getAllUsers`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || "Không lấy được danh sách người dùng");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Lỗi getAllUsers:", err.message);
+    throw err;
+  }
+};
+
+export const updateUserProfile = async (userId, updatedData) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_BASE_URL}/api/auth/users/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.message || "Cập nhật thông tin thất bại");
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Lỗi updateUserProfile:", err.message);
     throw err;
   }
 };

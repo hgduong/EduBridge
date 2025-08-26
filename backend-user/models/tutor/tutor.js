@@ -13,6 +13,10 @@ const tutorSchema = new mongoose.Schema({
     district: String, // Quận/Huyện
     ward: String, // Phường/Xã
   },
+  gender: { type: String },
+  major: { type: String },
+  experience: { type: String },
+  cetificate: { type: String },
 });
 
 tutorSchema.pre("save", async function (next) {

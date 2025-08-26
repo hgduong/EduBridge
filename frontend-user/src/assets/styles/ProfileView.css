@@ -1,0 +1,12 @@
+.profile-container {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.profile-container p {
+  margin: 8px 0;
+  font-size: 16px;
+}
