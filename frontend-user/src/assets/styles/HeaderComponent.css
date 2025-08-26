@@ -61,7 +61,12 @@
 
 .nav-link:hover {
   color: var(--color-secondary);
-  text-decoration: underline;
+}
+
+.nav-link.active {
+  color: var(--color-secondary);
+  font-weight: 600;
+  border-bottom: 2px solid var(--color-secondary);
 }
 
 /* Auth Buttons */

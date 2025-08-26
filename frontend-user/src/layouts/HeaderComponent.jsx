@@ -1,6 +1,6 @@
 // src/layout/HeaderComponent.jsx
 import "../assets/styles/HeaderComponent.css";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoTE from "../assets/images/logo_TE.jpg";
 import { useEffect, useState } from "react";
 import WebButton from "../components/common/WebButton";
@@ -48,21 +48,13 @@ const Header = () => {
 
   const navItems = [
     { label: "Giới thiệu", toSection: "about" },
-    { label: "Tìm kiếm", toSection: "search" },
-    { label: "Dành cho gia sư", to: "/hometutor" },
-    { label: "Dành cho học viên", to: "/student" },
+    { label: "Tìm gia sư", to: "/search-student" },
+    { label: "Tìm học viên", to: "/search-tutor" },
+    { label: "Tìm lớp pass", to: "/search-tutor-pass" },
     { label: "Hướng dẫn", to: "/guide" },
     { label: "Chính sách", to: "/policy" },
     { label: "Liên hệ", toSection: "contact" },
   ];
-
-  // Ẩn item không hợp với role
-  const filteredNavItems = navItems.filter((item) => {
-    if (!user) return true; // chưa đăng nhập → hiển thị tất cả
-    if (item.to === "/hometutor" && user.role === "student") return false;
-    if (item.to === "/student" && user.role === "tutor") return false;
-    return true;
-  });
 
   return (
     <header className="header">
@@ -76,15 +68,22 @@ const Header = () => {
 
         {/* Navigation */}
         <nav className="header-nav">
-          {filteredNavItems.map((item, idx) =>
+          {navItems.map((item, idx) =>
             item.to ? (
-              <Link key={idx} to={item.to} className="nav-link">
+              <NavLink
+                key={idx}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active" : ""}`
+                }
+              >
                 {item.label}
-              </Link>
+              </NavLink>
             ) : item.toSection ? (
               <span
                 key={idx}
-                className="nav-link"
+                className={`nav-link ${location.state?.scrollTo === item.toSection ? "active" : ""
+                  }`}
                 onClick={() => navigateAndScroll(item.toSection)}
               >
                 {item.label}

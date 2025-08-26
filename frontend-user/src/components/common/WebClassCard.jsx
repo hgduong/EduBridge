@@ -1,20 +1,21 @@
 import React from "react";
 import WebButton from "./WebButton";
 
-const WebStudentRequestCard = ({
-  name,
+const WebClassCard = ({
+  teacherName,
   subject,
   schedule,
   method,
   location,
   studentCount,
-  teacherGender,
-  requirement,
-  studentAvatar,
+  studentGender,
+  teacherAvatar,
   status,
+  startDate,
+  endDate,
   process,
   price,
-  detailLink,
+  detailLink, // link trang chi tiết
 }) => {
   return (
     <div style={styles.card}>
@@ -22,24 +23,27 @@ const WebStudentRequestCard = ({
         style={{
           ...styles.status,
           backgroundColor:
-            status === "Còn" ? "var(--color-primary)" : "var(--color-redff3131)",
+            status === "Còn"
+              ? "var(--color-primary)"
+              : "var(--color-redff3131)",
         }}
       >
         {status}
       </span>
 
-      <img src={studentAvatar} alt={name} style={styles.image} />
+      <img src={teacherAvatar} alt={teacherName} style={styles.image} />
       <div style={styles.info}>
-        <h3 style={styles.title}>{name}</h3>
+        <h3 style={styles.title}>{teacherName}</h3>
         <p>• Môn học: <b>{subject}</b></p>
         <p>• Lịch học: <b>{schedule}</b></p>
         <p>• Phương thức: <b>{method}</b></p>
         <p>• Địa điểm: <b>{location}</b></p>
         <p>• Lượng học viên: <b>{studentCount}</b></p>
-        <p>• Giới tính giáo viên: <b>{teacherGender}</b></p>
+        <p>• Giới tính học viên: <b>{studentGender}</b></p>
+        <p>• Ngày khai giảng: <b>{startDate}</b></p>
+        <p>• Ngày kết thúc: <b>{endDate}</b></p>
         <p>• Lộ trình: <b>{process}</b></p>
-        <p>• Ngân sách: <b>{price}</b></p>
-        <p>• <b>Yêu cầu:</b> {requirement}</p>
+        <p>• Giá khóa học: <b>{price}</b></p>
 
         {/* Link chi tiết + nút trên cùng 1 row */}
         <div style={styles.footer}>
@@ -47,7 +51,7 @@ const WebStudentRequestCard = ({
             Xem chi tiết
           </a>
           <WebButton
-            text="Nhận học sinh ngay"
+            text="Tham gia ngay"
             width="220px"
             height="48px"
             backgroundColor="var(--color-secondary)"
@@ -64,7 +68,7 @@ const WebStudentRequestCard = ({
   );
 };
 
-export default WebStudentRequestCard;
+export default WebClassCard;
 
 const styles = {
   card: {

@@ -1,8 +1,8 @@
 import React from "react";
 import WebButton from "./WebButton";
 
-const WebStudentRequestCard = ({
-  name,
+const WebPassClassCard = ({
+  authorName,
   subject,
   schedule,
   method,
@@ -10,35 +10,38 @@ const WebStudentRequestCard = ({
   studentCount,
   teacherGender,
   requirement,
-  studentAvatar,
-  status,
-  process,
+  description,
   price,
-  detailLink,
+  authorAvatar,
+  status,
+  detailLink, // link trang chi tiết
 }) => {
   return (
     <div style={styles.card}>
+      {/* Tag status */}
       <span
         style={{
           ...styles.status,
           backgroundColor:
-            status === "Còn" ? "var(--color-primary)" : "var(--color-redff3131)",
+            status === "Còn"
+              ? "var(--color-primary)"
+              : "var(--color-redff3131)",
         }}
       >
         {status}
       </span>
 
-      <img src={studentAvatar} alt={name} style={styles.image} />
+      <img src={authorAvatar} alt={authorName} style={styles.image} />
       <div style={styles.info}>
-        <h3 style={styles.title}>{name}</h3>
+        <h3 style={styles.title}>{authorName}</h3>
         <p>• Môn học: <b>{subject}</b></p>
         <p>• Lịch học: <b>{schedule}</b></p>
         <p>• Phương thức: <b>{method}</b></p>
         <p>• Địa điểm: <b>{location}</b></p>
         <p>• Lượng học viên: <b>{studentCount}</b></p>
         <p>• Giới tính giáo viên: <b>{teacherGender}</b></p>
-        <p>• Lộ trình: <b>{process}</b></p>
-        <p>• Ngân sách: <b>{price}</b></p>
+        <p>• Giá khóa học: <b>{price}</b></p>
+        <p>• <b>Mô tả:</b> {description}</p>
         <p>• <b>Yêu cầu:</b> {requirement}</p>
 
         {/* Link chi tiết + nút trên cùng 1 row */}
@@ -64,7 +67,7 @@ const WebStudentRequestCard = ({
   );
 };
 
-export default WebStudentRequestCard;
+export default WebPassClassCard;
 
 const styles = {
   card: {
@@ -113,11 +116,11 @@ const styles = {
     justifyContent: "space-between",
   },
   link: {
-    fontSize: "14px",
-    fontWeight: "500",
-    color: "var(--color-secondary)",
-    textDecoration: "underline",
-    cursor: "pointer",
-    fontStyle: "italic",
-  },
+  fontSize: "14px",
+  fontWeight: "500",
+  color: "var(--color-secondary)",
+  textDecoration: "underline",
+  cursor: "pointer",
+  fontStyle: "italic",
+},
 };
