@@ -1,16 +1,48 @@
-// Layout header now uses react-router links for clean navigation
 import "../assets/styles/HeaderComponent.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoTE from "../assets/images/logo_TE.jpg";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    const updateUser = () => {
+      const storedUser = localStorage.getItem("user");
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+      setShowDropdown(false);
+    };
+
+    updateUser(); // lần đầu
+    window.addEventListener("storage", updateUser); // lắng nghe thay đổi
+
+    return () => window.removeEventListener("storage", updateUser);
+  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
+  };
+
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -60; // avoid being hidden under header
+      const yOffset = -60;
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
+  };
+
+  const navigateAndScroll = (id) => {
+    if (location.pathname === "/" || location.pathname === "") {
+      scrollToSection(id);
+      return;
+    }
+    navigate("/", { state: { scrollTo: id } });
   };
 
   const navItems = [
@@ -22,19 +54,12 @@ const Header = () => {
     { label: "Chính sách", to: "/policy" },
     { label: "Liên hệ", toSection: "contact" },
   ];
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const navigateAndScroll = (id) => {
-    // If we're already on home, just scroll
-    if (location.pathname === "/" || location.pathname === "") {
-      scrollToSection(id);
-      return;
-    }
-    // otherwise navigate to home and pass requested section in state
-    navigate("/", { state: { scrollTo: id } });
-  };
+  const filteredNavItems = navItems.filter((item) => {
+    if (!user) return true; // chưa đăng nhập → hiển thị tất cả
+    if (item.to === "/hometutor" && user.role === "student") return false;
+    if (item.to === "/student" && user.role === "tutor") return false;
+    return true;
+  });
 
   return (
     <header className="header">
@@ -49,22 +74,17 @@ const Header = () => {
           padding: "0 3rem",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link to="/" className="brand" style={{ textDecoration: "none" }}>
-            <img src={logoTE} alt="EduBridge" className="site-logo" />
-          </Link>
-        </div>
+        <Link to="/" className="brand" style={{ textDecoration: "none" }}>
+          <img src={logoTE} alt="EduBridge" className="site-logo" />
+        </Link>
 
-        <nav
-          className="header-nav"
-          style={{ display: "flex", gap: 8, alignItems: "center" }}
-        >
-          {navItems.map((item, idx) =>
+        <nav className="header-nav" style={{ display: "flex", gap: 8 }}>
+          {filteredNavItems.map((item, idx) =>
             item.to ? (
               <NavLink key={idx} to={item.to} className="nav-button">
                 {item.label}
               </NavLink>
-            ) : item.toSection ? (
+            ) : (
               <button
                 key={idx}
                 className="nav-button"
@@ -72,29 +92,81 @@ const Header = () => {
               >
                 {item.label}
               </button>
-            ) : (
-              <button key={idx} className="nav-button" onClick={item.action}>
-                {item.label}
-              </button>
             )
           )}
         </nav>
 
-        <div style={{ display: "flex", gap: 8 }}>
-          <Link to="/register" className="nav-button">
-            Đăng kí
-          </Link>
-          <Link
-            to="/login"
-            className="nav-button"
-            style={{
-              background: "transparent",
-              color: "#007bff",
-              border: "1px solid #007bff",
-            }}
-          >
-            Đăng nhập
-          </Link>
+        <div style={{ display: "flex", gap: 8, position: "relative" }}>
+          {!user ? (
+            <>
+              <Link to="/register" className="nav-button">
+                Đăng kí
+              </Link>
+              <Link
+                to="/login"
+                className="nav-button"
+                style={{
+                  background: "transparent",
+                  color: "#007bff",
+                  border: "1px solid #007bff",
+                }}
+              >
+                Đăng nhập
+              </Link>
+            </>
+          ) : (
+            <div
+              className="user-menu"
+              onMouseEnter={() => setShowDropdown(true)}
+              onMouseLeave={() => setShowDropdown(false)}
+              style={{ cursor: "pointer" }}
+            >
+              <div
+                style={{
+                  alignItems: "right",
+                  gap: 5,
+                  padding: "6px 12px",
+
+                  borderRadius: 4,
+                }}
+              >
+                <span role="img" aria-label="user">
+                  👤
+                </span>
+                <span>{user.full_name.split(" ").slice(-1)[0]}</span>
+              </div>
+
+              {showDropdown && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: 0,
+                    background: "#ffffffff",
+                    border: "1px solid #fbf8f8ff",
+
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+                    zIndex: 10,
+                  }}
+                >
+                  <button
+                    className="nav-button"
+                    style={{ width: "100%", textAlign: "left" }}
+                    onClick={() => navigate("/profile")}
+                  >
+                    Thông tin cá nhân
+                  </button>
+                  <button
+                    className="nav-button"
+                    style={{ width: "100%", textAlign: "left" }}
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </header>

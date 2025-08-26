@@ -13,6 +13,9 @@ const studentSchema = new mongoose.Schema({
     district: String, // Quận/Huyện
     ward: String, // Phường/Xã
   },
+  gender: { type: String, default: "Nam" },
+  school: { type: String, default: "" },
+  class: { type: String, default: "" },
 });
 
 studentSchema.pre("save", async function (next) {
