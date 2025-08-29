@@ -3,6 +3,8 @@ import "../../assets/styles/FindStudentForm.css"; // Import file CSS riêng
 import AddressSelector from "../../components/Location/AddressSelector";
 import { Modal } from "antd";
 import { createQRPayment } from "../../services/paymentService";
+import { toast } from "react-toastify";
+
 export default function FindStudentForm({ onSubmit }) {
   const [form, setForm] = useState({
     subject: "",
@@ -15,6 +17,7 @@ export default function FindStudentForm({ onSubmit }) {
     sessionsPerWeek: "",
     notes: "",
   });
+
   const fees = parseFloat(form.fees) || 0;
   const numberStudent = parseInt(form.numberstudent) || 0;
   const sessionsPerWeek = parseInt(form.sessionsPerWeek) || 0;
@@ -23,6 +26,9 @@ export default function FindStudentForm({ onSubmit }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [qrUrl, setQrUrl] = useState("");
+  const [showPaymentConfirm, setShowPaymentConfirm] = useState(false);
+  const [transactionCode, setTransactionCode] = useState("");
+  const [paymentImage, setPaymentImage] = useState(null);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -213,7 +219,7 @@ export default function FindStudentForm({ onSubmit }) {
             }}
             style={{
               padding: "8px 16px",
-              backgroundColor: "#27ae60",
+              backgroundColor: "#0077cc",
               border: "none",
               borderRadius: "6px",
               color: "white",
@@ -256,11 +262,11 @@ export default function FindStudentForm({ onSubmit }) {
             key="done"
             onClick={() => {
               setShowQR(false);
-              onSubmit(form); // Gửi yêu cầu sau khi thanh toán
+              setShowPaymentConfirm(true); // Gửi yêu cầu sau khi thanh toán
             }}
             style={{
               padding: "8px 16px",
-              backgroundColor: "#2ecc71",
+              backgroundColor: "#0077cc",
               border: "none",
               borderRadius: "6px",
               color: "white",
@@ -268,7 +274,7 @@ export default function FindStudentForm({ onSubmit }) {
               cursor: "pointer",
             }}
           >
-            ✅ Tôi đã thanh toán
+            ✅ Tôi đã thanh toán. Nhập mã giao dịch hoặc upload ảnh. Tại đây.
           </button>,
         ]}
       >
@@ -284,6 +290,87 @@ export default function FindStudentForm({ onSubmit }) {
           )}
           <p style={{ fontSize: "14px", color: "#7f8c8d", marginTop: "1rem" }}>
             Quét mã bằng ứng dụng ngân hàng để thanh toán phí mở lớp.
+          </p>
+        </div>
+      </Modal>
+      <Modal
+        title="📩 Xác nhận đã chuyển khoản"
+        open={showPaymentConfirm}
+        onCancel={() => setShowPaymentConfirm(false)}
+        footer={[
+          <button
+            onClick={async () => {
+              if (!transactionCode && !paymentImage) {
+                toast.error(
+                  "⚠️ Vui lòng nhập mã giao dịch hoặc upload ảnh chuyển khoản."
+                );
+                return;
+              }
+
+              const payload = new FormData();
+              payload.append("subject", form.subject);
+              payload.append("level", form.level);
+              payload.append("location", form.location);
+              payload.append("schedule", form.schedule);
+              payload.append("fees", form.fees);
+              payload.append("timestudy", form.timestudy);
+              payload.append("numberstudent", form.numberstudent);
+              payload.append("sessionsPerWeek", form.sessionsPerWeek);
+              payload.append("notes", form.notes);
+              payload.append("transactionCode", transactionCode);
+              if (paymentImage) {
+                payload.append("paymentImage", paymentImage);
+              }
+
+              try {
+                await postRequest(
+                  "/api/class-request",
+                  payload,
+                  localStorage.getItem("token")
+                );
+                toast.success("✅ Đã gửi yêu cầu mở lớp thành công!");
+                setShowPaymentConfirm(false);
+              } catch (err) {
+                toast.error("❌ " + err.message);
+              }
+            }}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#0077cc",
+              border: "none",
+              borderRadius: "6px",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+            }}
+          >
+            📤 Gửi yêu cầu mở lớp tới admin
+          </button>,
+        ]}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <label>
+            Mã giao dịch:
+            <input
+              type="text"
+              value={transactionCode}
+              onChange={(e) => setTransactionCode(e.target.value)}
+              placeholder="Nhập mã giao dịch ngân hàng"
+              style={{ width: "100%", padding: "8px" }}
+            />
+          </label>
+          Hoặc
+          <label>
+            Ảnh chụp màn hình chuyển khoản:
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setPaymentImage(e.target.files[0])}
+            />
+          </label>
+          <p style={{ fontSize: "14px", color: "#7f8c8d" }}>
+            Bạn có thể nhập mã giao dịch hoặc upload ảnh chuyển khoản để xác
+            nhận.
           </p>
         </div>
       </Modal>
