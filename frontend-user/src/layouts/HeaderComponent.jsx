@@ -46,13 +46,13 @@ const Header = () => {
   };
 
   const navItems = [
-    { label: "Giới thiệu", toSection: "about" },
-    { label: "Tìm kiếm", toSection: "search" },
-    { label: "Dành cho gia sư", to: "/hometutor" },
-    { label: "Dành cho học viên", to: "/student" },
-    { label: "Hướng dẫn", to: "/guide" },
-    { label: "Chính sách", to: "/policy" },
-    { label: "Liên hệ", toSection: "contact" },
+    { label: "GIỚI THIỆU", toSection: "about" },
+    { label: "TÌM KIẾM", toSection: "search" },
+    { label: "DÀNH CHO GIA SƯ", to: "/hometutor" },
+    { label: "DÀNH CHO HỌC VIÊN", to: "/student" },
+    { label: "HƯỚNG DẪN", to: "/guide" },
+    { label: "CHÍNH SÁCH", to: "/policy" },
+    { label: "LIÊN HỆ", toSection: "contact" },
   ];
   const filteredNavItems = navItems.filter((item) => {
     if (!user) return true; // chưa đăng nhập → hiển thị tất cả
