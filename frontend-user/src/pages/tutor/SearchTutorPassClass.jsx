@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import "../../App.css";
 import WebHorizontalButtons from "../../components/common/WebHorizontalButtons";
-import WebStudentRequestCard from "../../components/common/WebStudentRequestCard";
 import AddressSelector from "../../components/Location/AddressSelector";
-import mockStudentRequests from "../../mock/student/StudentRequestMockData";
+import WebPassClassCard from "../../components/common/WebPassClassCard";
+import mockPassClass from "../../mock/tutor/PassClassMockData";
 import WebPagination from "../../components/common/WebPagination";
 
-const SearchTutor = () => {
+const SearchTutorPassClass = () => {
   // ---- Quản lý phân trang ----
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6; // 👉 số card mỗi trang
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
-  const currentCards = mockStudentRequests.slice(indexOfFirstCard, indexOfLastCard);
+  const currentCards = mockPassClass.slice(indexOfFirstCard, indexOfLastCard);
 
-  const totalPages = Math.ceil(mockStudentRequests.length / cardsPerPage);
+  const totalPages = Math.ceil(mockPassClass.length / cardsPerPage);
 
   return (
     <div>
@@ -86,16 +86,16 @@ const SearchTutor = () => {
         </div>
       </div>
 
-      {/* Nút scroll ngang */}
+      {/* Hàng nút scroll ngang */}
       <WebHorizontalButtons />
 
       {/* Tổng số kết quả */}
-      <p className="search-result-count">{mockStudentRequests.length} kết quả</p>
+      <p className="search-result-count">{mockPassClass.length} kết quả</p>
 
       {/* Card kết quả */}
       <div className="grid grid-cols-1 gap-4">
         {currentCards.map((request) => (
-          <WebStudentRequestCard key={request.id} {...request} />
+          <WebPassClassCard key={request.id} {...request} />
         ))}
       </div>
 
@@ -109,4 +109,4 @@ const SearchTutor = () => {
   );
 };
 
-export default SearchTutor;
+export default SearchTutorPassClass;

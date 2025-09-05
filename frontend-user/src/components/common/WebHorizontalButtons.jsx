@@ -1,9 +1,9 @@
 import React from 'react';
-import AppButton from '../../components/common/AppButton';
+import WebButton from './WebButton';
 import AppIcon from '../../config/AppIcon';
 import '../../App.css';
 
-const AppHorizontalButtons = () => {
+const WebHorizontalButtons = () => {
   const buttonsData = [
     { name: 'math', text: 'Toán' },
     { name: 'literature', text: 'Tiếng Việt' },
@@ -15,18 +15,18 @@ const AppHorizontalButtons = () => {
   return (
     <div className="horizontal-buttons-wrapper" style={{ display: 'flex', gap: '16px', overflowX: 'auto', padding: '8px 0' }}>
       {buttonsData.map((btn, index) => (
-        <AppButton
+        <WebButton
           key={index}
-          icon={<AppIcon name={btn.name} color="var(--color-primary)" />}
+          icon={<AppIcon name={btn.name} color="var(--color-tertiary)" />}
           text={btn.text}
           width="140px"
           height="48px"
           backgroundColor="var(--color-white)"       // khi chưa hover
-          textColor="var(--color-primary)"           // khi chưa hover
-          borderColor="var(--color-primary)"         // khi chưa hover
-          hoverBackgroundColor="var(--color-primary)"// khi hover
+          textColor="var(--color-tertiary)"           // khi chưa hover
+          borderColor="var(--color-tertiary)"         // khi chưa hover
+          hoverBackgroundColor="var(--color-tertiary)"// khi hover
           hoverTextColor="var(--color-white)"        // khi hover
-          hoverBorderColor="var(--color-primary)"    // khi hover
+          hoverBorderColor="var(--color-tertiary)"    // khi hover
           borderRadius="24px"
         />
       ))}
@@ -34,4 +34,4 @@ const AppHorizontalButtons = () => {
   );
 };
 
-export default AppHorizontalButtons;
+export default WebHorizontalButtons;

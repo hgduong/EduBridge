@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const AppButton = ({
+const WebButton = ({
   icon,
   text,
   width = "auto",
@@ -49,4 +49,4 @@ const AppButton = ({
   );
 };
 
-export default AppButton;
+export default WebButton;
