@@ -1,19 +1,19 @@
+// src/layout/HeaderComponent.jsx
 import "../assets/styles/HeaderComponent.css";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import logoTE from "../assets/images/logo_TE.jpg";
 import { useEffect, useState } from "react";
+import WebButton from "../components/common/WebButton";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const updateUser = () => {
       const storedUser = localStorage.getItem("user");
       setUser(storedUser ? JSON.parse(storedUser) : null);
-      setShowDropdown(false);
     };
 
     updateUser(); // lần đầu
@@ -21,6 +21,7 @@ const Header = () => {
 
     return () => window.removeEventListener("storage", updateUser);
   }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -47,125 +48,99 @@ const Header = () => {
 
   const navItems = [
     { label: "Giới thiệu", toSection: "about" },
-    { label: "Tìm kiếm", toSection: "search" },
-    { label: "Dành cho gia sư", to: "/hometutor" },
-    { label: "Dành cho học viên", to: "/student" },
+    { label: "Tìm gia sư", to: "/search-student" },
+    { label: "Tìm học viên", to: "/search-tutor" },
+    { label: "Tìm lớp pass", to: "/search-tutor-pass" },
     { label: "Hướng dẫn", to: "/guide" },
     { label: "Chính sách", to: "/policy" },
     { label: "Liên hệ", toSection: "contact" },
   ];
-  const filteredNavItems = navItems.filter((item) => {
-    if (!user) return true; // chưa đăng nhập → hiển thị tất cả
-    if (item.to === "/hometutor" && user.role === "student") return false;
-    if (item.to === "/student" && user.role === "tutor") return false;
-    return true;
-  });
 
   return (
     <header className="header">
-      <div
-        style={{
-          background: "#ffffffff",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: 1400,
-          margin: "0 auto",
-          padding: "0 3rem",
-        }}
-      >
-        <Link to="/" className="brand" style={{ textDecoration: "none" }}>
-          <img src={logoTE} alt="EduBridge" className="site-logo" />
-        </Link>
+      <div className="header-container">
+        {/* Logo */}
+        <div className="brand-wrapper">
+          <Link to="/" className="brand">
+            <img src={logoTE} alt="EduBridge" className="site-logo" />
+          </Link>
+        </div>
 
-        <nav className="header-nav" style={{ display: "flex", gap: 8 }}>
-          {filteredNavItems.map((item, idx) =>
+        {/* Navigation */}
+        <nav className="header-nav">
+          {navItems.map((item, idx) =>
             item.to ? (
-              <NavLink key={idx} to={item.to} className="nav-button">
+              <NavLink
+                key={idx}
+                to={item.to}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active" : ""}`
+                }
+              >
                 {item.label}
               </NavLink>
-            ) : (
-              <button
+            ) : item.toSection ? (
+              <span
                 key={idx}
-                className="nav-button"
+                className={`nav-link ${location.state?.scrollTo === item.toSection ? "active" : ""
+                  }`}
                 onClick={() => navigateAndScroll(item.toSection)}
               >
                 {item.label}
-              </button>
+              </span>
+            ) : (
+              <span key={idx} className="nav-link" onClick={item.action}>
+                {item.label}
+              </span>
             )
           )}
         </nav>
 
-        <div style={{ display: "flex", gap: 8, position: "relative" }}>
+        {/* Auth Buttons */}
+        <div className="auth-buttons">
           {!user ? (
             <>
-              <Link to="/register" className="nav-button">
-                Đăng kí
-              </Link>
-              <Link
-                to="/login"
-                className="nav-button"
-                style={{
-                  background: "transparent",
-                  color: "#007bff",
-                  border: "1px solid #007bff",
-                }}
-              >
-                Đăng nhập
-              </Link>
+              <WebButton
+                text="Đăng kí"
+                onClick={() => navigate("/register")}
+                width="120px"
+                height="46px"
+                backgroundColor="var(--color-primary)"
+                textColor="var(--color-white)"
+                borderColor="var(--color-primary)"
+                hoverBackgroundColor="var(--color-secondary)"
+                hoverTextColor="var(--color-white)"
+                hoverBorderColor="var(--color-secondary)"
+                borderRadius="12px"
+              />
+              <WebButton
+                text="Đăng nhập"
+                onClick={() => navigate("/login")}
+                width="120px"
+                height="46px"
+                backgroundColor="transparent"
+                textColor="var(--color-primary)"
+                borderColor="var(--color-primary)"
+                hoverBackgroundColor="var(--color-secondary)"
+                hoverTextColor="var(--color-white)"
+                hoverBorderColor="var(--color-secondary)"
+                borderRadius="12px"
+              />
             </>
           ) : (
-            <div
-              className="user-menu"
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-              style={{ cursor: "pointer" }}
-            >
-              <div
-                style={{
-                  alignItems: "right",
-                  gap: 5,
-                  padding: "6px 12px",
-
-                  borderRadius: 4,
-                }}
-              >
-                <span role="img" aria-label="user">
-                  👤
-                </span>
-                <span>{user.full_name.split(" ").slice(-1)[0]}</span>
-              </div>
-
-              {showDropdown && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    right: 0,
-                    background: "#ffffffff",
-                    border: "1px solid #fbf8f8ff",
-
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                    zIndex: 10,
-                  }}
-                >
-                  <button
-                    className="nav-button"
-                    style={{ width: "100%", textAlign: "left" }}
-                    onClick={() => navigate("/profile")}
-                  >
-                    Thông tin cá nhân
-                  </button>
-                  <button
-                    className="nav-button"
-                    style={{ width: "100%", textAlign: "left" }}
-                    onClick={handleLogout}
-                  >
-                    Đăng xuất
-                  </button>
-                </div>
-              )}
-            </div>
+            <WebButton
+              text="Đăng xuất"
+              onClick={handleLogout}
+              width="120px"
+              height="46px"
+              backgroundColor="var(--color-primary)"
+              textColor="var(--color-white)"
+              borderColor="var(--color-primary)"
+              hoverBackgroundColor="var(--color-secondary)"
+              hoverTextColor="var(--color-white)"
+              hoverBorderColor="var(--color-secondary)"
+              borderRadius="12px"
+            />
           )}
         </div>
       </div>

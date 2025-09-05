@@ -5,13 +5,14 @@ import Login from "../pages/common/Login";
 import Register from "../pages/common/Register";
 import Profile from "../pages/common/Profile";
 import NotFound from "../pages/common/NotFound";
-import HomeTutor from "../pages/tutor/HomeTutor";
 import StudentPage from "../pages/student/StudentPage";
 import Guide from "../components/Guide/Guide";
 import Policy from "../components/Policy/Policy";
 import FindStudentForm from "../pages/tutor/FindStudentForm";
 import Home from "../pages/common/Home";
 import SearchTutor from "../pages/tutor/SearchTutor";
+import SearchTutorPassClass from "../pages/tutor/SearchTutorPassClass";
+import SearchStudent from "../pages/student/SearchStudent";
 import PaymentForm from "../pages/common/Payment";
 const AppRoutes = () => {
   return (
@@ -21,8 +22,9 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/hometutor" element={<HomeTutor />} />
-        <Route path="/searchtutor" element={<SearchTutor />} />
+        <Route path="/search-tutor" element={<SearchTutor />} />
+        <Route path="/search-tutor-pass" element={<SearchTutorPassClass />} />
+        <Route path="/search-student" element={<SearchStudent />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/student" element={<StudentPage />} />
         <Route path="/guide" element={<Guide />} />
