@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 @import url("./config/AppColor.css");
+
 
 /* Reset margin/padding mặc định */
 * {
@@ -9,7 +11,7 @@
 
 /* Body full width + font mặc định */
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Montserrat', 'Segoe UI', sans-serif;
   background-color: #fff;
   color: #333;
 }
@@ -31,7 +33,7 @@ body {
   flex: 1 0 auto; /* grow to fill available space */
 }
 
-.search-tutor-container {
+.blue-container {
   width: 100%;
   height: 160px;
   background-color: var(--color-primary);
@@ -76,7 +78,7 @@ body {
 
 /* Hàng 1 */
 .search-inputs input[list="subjects"] {
-  width: 40%;   /* Môn học/Chứng chỉ (dài) */
+  width: 30%;   /* Môn học/Chứng chỉ (dài) */
 }
 .search-inputs input[type="time"] {
   width: 15%;   /* Giờ học (ngắn) */
@@ -85,21 +87,24 @@ body {
   width: 15%;   /* Ngày học (ngắn) */
 }
 .search-inputs input[list="routes"] {
-  width: 25%;   /* Lộ trình (vừa) */
+  width: 15%;   /* Lộ trình (ngắn) */
 }
 
 /* Hàng 2 */
 .city {
-  width: 25%;   /* Thành phố (vừa) */
+  width: 20%;   /* Thành phố (vừa) */
 }
 .district {
-  width: 25%;   /* Quận/Huyện (vừa) */
+  width: 20%;   /* Quận/Huyện (vừa) */
 }
 .ward {
-  width: 25%;   /* Xã (vừa) */
+  width: 20%;   /* Xã (vừa) */
 }
 .gender {
-  width: 15%;   /* Giới tính (ngắn) */
+  width: 10%;   /* Giới tính (ngắn) */
+}
+.student-count {
+  width: 10%;   /* Lượng học viên (ngắn) */
 }
 
 /* Horizontal buttons */
@@ -109,7 +114,18 @@ body {
   overflow-x: auto;
   padding: 8px 0;
   -webkit-overflow-scrolling: touch; /* smooth scroll trên iOS */
-  margin-top: -40px;
+  margin-top: -50px;
   margin-left: 24px;
   margin-right: 24px;
+  margin-bottom: 28px;
+}
+
+/* Kết quả tìm kiếm */
+.search-result-count {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--color-black);
+  margin: 12px 24px; 
+  padding-bottom: 20px;
+  text-align: right; 
 }
