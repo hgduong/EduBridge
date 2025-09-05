@@ -14,6 +14,7 @@ import SearchTutor from "../pages/tutor/SearchTutor";
 import SearchTutorPassClass from "../pages/tutor/SearchTutorPassClass";
 import SearchStudent from "../pages/student/SearchStudent";
 import PaymentForm from "../pages/common/Payment";
+import HomeTutor from "../pages/tutor/HomeTutor";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -31,6 +32,7 @@ const AppRoutes = () => {
         <Route path="/policy" element={<Policy />} />
         <Route path="/find-student-form" element={<FindStudentForm />} />
         <Route path="/payment" element={<PaymentForm />} />
+        <Route path="/hometutor" element={<HomeTutor />} />
       </Route>
     </Routes>
   );
