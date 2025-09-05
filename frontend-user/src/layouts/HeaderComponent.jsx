@@ -49,7 +49,8 @@ const Header = () => {
   const navItems = [
     { label: "GIỚI THIỆU", toSection: "about" },
     { label: "TÌM KIẾM", toSection: "search" },
-    { label: "DÀNH CHO GIA SƯ", to: "/tutor" },
+    { label: "DÀNH CHO GIA SƯ", to: "/hometutor" },
+    { label: "TÌM LỚP PASS", to: "/search-tutor-pass" },
     { label: "DÀNH CHO HỌC VIÊN", to: "/student" },
     { label: "HƯỚNG DẪN", to: "/guide" },
     { label: "CHÍNH SÁCH", to: "/policy" },

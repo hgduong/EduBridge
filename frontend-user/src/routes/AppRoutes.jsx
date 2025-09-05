@@ -32,7 +32,7 @@ const AppRoutes = () => {
         <Route path="/policy" element={<Policy />} />
         <Route path="/find-student-form" element={<FindStudentForm />} />
         <Route path="/payment" element={<PaymentForm />} />
-        <Route path="/tutor" element={<HomeTutor />} />
+        <Route path="/hometutor" element={<HomeTutor />} />
       </Route>
     </Routes>
   );
