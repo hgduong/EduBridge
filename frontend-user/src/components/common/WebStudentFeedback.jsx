@@ -23,6 +23,7 @@ export default WebStudentFeedback;
 const styles = {
   card: {
     display: "flex",
+    flexDirection: "row",
     alignItems: "center",
     backgroundColor: "var(--color-bluee1f4ff)",
     borderRadius: "16px",
