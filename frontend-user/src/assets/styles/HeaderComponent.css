@@ -6,23 +6,38 @@
   background-color: var(--color-white);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
+  text-decoration: none;
 }
 
 /* Container chính */
 .header-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  
 }
 
-/* Logo và brand */
-.brand-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* Nút điều hướng */
+.nav-button {
+  background-color: #61a9f5;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  background-color: #17487c;
+}
+
+/* Khoảng trống khi cuộn đến section */
+section {
+  scroll-margin-top: 100px;
 }
 
 .brand {

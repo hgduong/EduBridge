@@ -47,13 +47,14 @@ const Header = () => {
   };
 
   const navItems = [
-    { label: "Giới thiệu", toSection: "about" },
-    { label: "Tìm gia sư", to: "/search-student" },
-    { label: "Tìm học viên", to: "/search-tutor" },
-    { label: "Tìm lớp pass", to: "/search-tutor-pass" },
-    { label: "Hướng dẫn", to: "/guide" },
-    { label: "Chính sách", to: "/policy" },
-    { label: "Liên hệ", toSection: "contact" },
+    { label: "GIỚI THIỆU", toSection: "about" },
+    { label: "TÌM KIẾM", toSection: "search" },
+    { label: "DÀNH CHO GIA SƯ", to: "/hometutor" },
+    { label: "TÌM LỚP PASS", to: "/search-tutor-pass" },
+    { label: "DÀNH CHO HỌC VIÊN", to: "/student" },
+    { label: "HƯỚNG DẪN", to: "/guide" },
+    { label: "CHÍNH SÁCH", to: "/policy" },
+    { label: "LIÊN HỆ", toSection: "contact" },
   ];
 
   return (

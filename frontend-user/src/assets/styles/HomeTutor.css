@@ -1,0 +1,64 @@
+/* Layout 2 cột */
+.home-tutor-layout {
+  display: flex;
+  gap: 32px;
+  padding: 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sidebar bên trái */
+.sidebar {
+  flex: 1;
+  max-width: 280px;
+}
+
+.sidebar h3 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+/* Content bên phải */
+.content {
+  flex: 3;
+}
+
+.content h3 {
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+/* Grid card */
+.request-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Card style */
+.request-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-4px);
+}
+
+.request-card h4 {
+  margin-bottom: 8px;
+  color: #1890ff;
+  font-size: 1.2rem;
+}
+
+.request-card p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
